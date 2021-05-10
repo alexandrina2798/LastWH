@@ -22,7 +22,7 @@ public class DbClient {
         while (resultSet.next()) {
             realCount = resultSet.getRow();
         }
-        Assertions.assertTrue(realCount == expectedCount);
+        Assertions.assertEquals(expectedCount, realCount);
         connection.close();
     }
 
@@ -42,10 +42,11 @@ public class DbClient {
                                 "VALUES(" + row + " , 'Лишний" + row + " ', 2, 1, 1, 1);\n");
 
             } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
+                System.out.println("Ошибка подключения к базе: " + JdbcSQLIntegrityConstraintViolationException);
             }
         }
 
-        Assertions.assertTrue(expectedInsertedRows == realInsertedRows);
+        Assertions.assertEquals(expectedInsertedRows, realInsertedRows);
         connection.close();
     }
 
@@ -62,9 +63,10 @@ public class DbClient {
                     executeUpdate("INSERT INTO public.workman (id, \"name\", age, \"position\") " +
                             "VALUES(10214, null, 23, 1);\n");
         } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
+            System.out.println("Ошибка подключения к базе: " + JdbcSQLIntegrityConstraintViolationException);
         }
 
-        Assertions.assertTrue(expectedInsertedRows == realInsertedRows);
+        Assertions.assertEquals(expectedInsertedRows, realInsertedRows);
         connection.close();
     }
 
@@ -78,6 +80,7 @@ public class DbClient {
             insertedRows = statement.executeUpdate("INSERT INTO public.places (id, \"row\", place_num, \"name\") " +
                     "VALUES(112, 112, 18512, 'Тестовый загон');\n");
         } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
+            System.out.println("Ошибка подключения к базе: " + JdbcSQLIntegrityConstraintViolationException);
         }
 
         ResultSet resultSet = statement.executeQuery("select * from public.places");
@@ -94,6 +97,7 @@ public class DbClient {
         try {
             statement.executeUpdate("delete from public.places where id = 112");
         } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
+            System.out.println("Ошибка подключения к базе: " + JdbcSQLIntegrityConstraintViolationException);
         }
 
 
